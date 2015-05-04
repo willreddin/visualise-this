@@ -6,21 +6,24 @@ reader = csv.reader(open('unemployment-aug2010.txt', 'r'), delimiter=",")
 svg = open('counties.svg', 'r').read()
 
 unemployment = {}
-min_value = 100; max_value = 0
+min_value = 100; max_value = 0;
+
 for row in reader:
 	try:
-		full_fips = row[1] + row[2]
-		rate = float( row[8].strip() )
-		unemployment[full_fips] = rate
+			full_fips = row[1] + row[2]
+			rate = float( row[5].strip() )
+			unemployment[full_fips] = rate
+			rates_only.append(rate)
 	except:
 		pass
-#this doesn't work yet >I think I need to install the lxml parser library so that bs4 can do selfClosingTags
-soup = BeautifulSoup(svg, 'xml')
+
+#for bs4 you just need to pass in svg, don't need selfclosing tag argument
+soup = BeautifulSoup(svg)
 paths = soup.findAll('path')
 
 colors = ["#F1EEF6", "#D4B9DA", "#C994C7", "#DF65B0", "#DD1C77", "#980043"]
 
-path_style = 'font-size:12px;fill-rule:nonzero;stroke:#ffff;stroke-opacity:1;stroke-width;0.1;stroke-mitrelimit:4;stroke-dasharray;none;stroke-linecap:butt;marker-start:none;stroke-linejoin:bevel;fill:'
+path_style = 'font-size:12px;fill-rule:nonzero;stroke:#FFFFFF;stroke-opacity:1;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:butt;marker-start:none;stroke-linejoin:bevel;fill:'
 
 for p in paths:
 	if p['id'] not in ["State_Lines", "separator"]:
